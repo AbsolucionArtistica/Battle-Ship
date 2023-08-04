@@ -26,7 +26,7 @@ const Home = () => {
 				</div>
 			</div>
 			<div className=" d-flex justify-content-center">
-				<div className="colCoordiantes bg-secondary text-center">
+				<div className="colCoordinates bg-secondary text-center">
 					<div className="tile">1</div>
 					<div className="tile">2</div>
 					<div className="tile">3</div>

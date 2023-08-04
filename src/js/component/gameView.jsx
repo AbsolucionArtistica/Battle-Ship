@@ -29,6 +29,18 @@ const Tile = ({ value, rowIndex, colIndex, updateTileValue }) => {
   );
 };
 
+const FireButton = () => {
+  const FireTorpedo = () => {
+    // no me dio el tiempo :c
+  }
+
+return (
+  <div className="d-flex justify-content-center">
+    <button type="button" className="btn btn-primary" onClick={FireTorpedo}>Fire!</button>
+  </div>
+);
+};
+
 const GameBoard = () => {
   const [gameBoard, setGameBoard] = useState([
     [1, 1, 1, 1, 1, 0, 0, 0, 0, 0],
@@ -68,6 +80,9 @@ const GameBoard = () => {
           ))}
         </div>
       ))}
+			<div className="d-flex justify-content-center m-1">
+			  <FireButton/>
+			</div>
     </div>
   );
 };
