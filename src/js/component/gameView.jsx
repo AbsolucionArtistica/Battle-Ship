@@ -36,7 +36,7 @@ const GameRules = () => {
   const CPUTile = () => {
     let randomIndex = [Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)];
 
-    const [cpuRowIndex, cpuColIndex] = randomIndex();
+    const [cpuRowIndex, cpuColIndex] = randomIndex;
     const newValue = gameBoard[cpuRowIndex][cpuColIndex] === 1 ? 2 : 3;
     updateCPUTileValue(cpuRowIndex, cpuColIndex, newValue);
 
@@ -141,7 +141,7 @@ const GameRules = () => {
         {cpuGameBoard.map((row, rowIndex) => (
           <div key={rowIndex} className="row">
             {row.map((value, colIndex) => (
-              <CPUTile key={colIndex} value={value} rowIndex={rowIndex} colIndex={colIndex} updateCPUTileValue={updateCPUTileValue}/>
+              <CPUTile key={colIndex} value={value} rowIndex={rowIndex} colIndex={colIndex} updateCPUTileValue={updateCPUTileValue} board={gameBoard}/>
             ))}
           </div>
         ))}
