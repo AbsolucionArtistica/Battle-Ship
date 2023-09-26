@@ -1,18 +1,22 @@
 .tile{
-    width: 50px;
-    height: 50px;
+    width: 30px;
+    height: 30px;
 }
 .rowCoordiantes{
-    width: 500px;
-    height: 35px;
+    width: 323px;
+    height: 30px;
 }
 .colCoordinates{
-    width: 50px;
-    height: 500px;
+    width: 35px;
+    height: 300px;
 }
 .cornerTile{
-    width: 50px;
-    height: 20px;
+    width: 25px;
+    height: 30px;
+}
+.board{
+    width: 320;
+    height: auto;
 }
 body{
     background-color: darkcyan;
