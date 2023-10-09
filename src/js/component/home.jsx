@@ -3,6 +3,7 @@ import React from "react";
 //include images into your bundle
 import rigoImage from "../../img/rigo-baby.jpg";
 
+import { GameBoard } from "./gameView";
 import GameRules from "./gameView";
 import { RowNumbers, ColNumbers } from "./coordinatesNumbers";
 
@@ -10,8 +11,9 @@ import { RowNumbers, ColNumbers } from "./coordinatesNumbers";
 const Home = () => {
 	return (
 		<>
-			<GameRules/>
-		</>
+		<GameBoard board={"player"} />
+		<GameBoard board={"cpu"} />
+	  </>
 	);
 };
 

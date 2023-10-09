@@ -1,8 +1,47 @@
 import React, { useEffect, useState } from "react";
 
-const GameRules = () => {
+export const GameBoard = (board) => {
 
-  const handleTurn = () => { }
+  const [gameBoard, setGameBoard] = useState([
+    [1, 1, 1, 1, 1, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [1, 0, 0, 1, 1, 0, 0, 0, 0, 0],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [1, 1, 1, 1, 0, 0, 0, 0, 0, 0],
+  ]);
+
+  const boardBehavior = () => { // aun no esta lista
+    if (board === "player") {
+      const playerGameboard = () => { }
+    } else {
+      const randomIndex = () => {
+        return [Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)];
+      };
+    }
+  }
+
+  const updateTileValue = (rowIndex, colIndex, newValue) => {
+    const newGameBoard = gameBoard.map((row, rIndex) => {
+      if (rIndex === rowIndex) {
+        return row.map((value, cIndex) => {
+          if (cIndex === colIndex) {
+            return newValue;
+          }
+          return value;
+        });
+      }
+      return row;
+    });
+
+    setGameBoard(newGameBoard);
+
+    toggleTurn()
+  };
 
   const Tile = ({ value, rowIndex, colIndex, updateTileValue }) => {
     const handleColorChange = () => {
@@ -33,131 +72,28 @@ const GameRules = () => {
     );
   };
 
-  const CPUTile = () => {
-    let randomIndex = [Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)];
-
-    const [cpuRowIndex, cpuColIndex] = randomIndex;
-    const newValue = gameBoard[cpuRowIndex][cpuColIndex] === 1 ? 2 : 3;
-    updateCPUTileValue(cpuRowIndex, cpuColIndex, newValue);
-
-    const getCPUTileColor = () => {
-      switch (value) {
-        case 0:
-          return "white"; // Empty space
-        case 1:
-          return "white"; // A part of ship
-        case 2:
-          return "red"; // Hit
-        case 3:
-          return "gray"; // Missed shot
-        default:
-          return "white";
-      }
-    };
-
-    return (
-      <button className="tile" style={{ backgroundColor: getCPUTileColor() }}></button>
-    );
-  };
-
-  const GameBoard = () => {
-    const [gameBoard, setGameBoard] = useState([
-      [1, 1, 1, 1, 1, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [1, 0, 0, 1, 1, 0, 0, 0, 0, 0],
-      [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [1, 1, 1, 1, 0, 0, 0, 0, 0, 0],
-    ]);
-
-    const updateTileValue = (rowIndex, colIndex, newValue) => {
-      const newGameBoard = gameBoard.map((row, rIndex) => {
-        if (rIndex === rowIndex) {
-          return row.map((value, cIndex) => {
-            if (cIndex === colIndex) {
-              return newValue;
-            }
-            return value;
-          });
-        }
-        return row;
-      });
-  
-      setGameBoard(newGameBoard);
-    };
-
-    return (
-      <div className="game-board col-6">
-        {gameBoard.map((row, rowIndex) => (
-          <div key={rowIndex} className="row">
-            {row.map((value, colIndex) => (
-              <Tile key={colIndex} value={value} rowIndex={rowIndex} colIndex={colIndex} updateTileValue={updateTileValue} />
-            ))}
-          </div>
-        ))}
-        <div className="d-flex justify-content-center m-1">
-          <FireButton />
-        </div>
-      </div>
-    );
-  };
-
-  const CPUGameBoard = () => {
-    const [cpuGameBoard, setCPUGameBoard] = useState([
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 1, 1, 1, 1, 1, 0],
-      [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [1, 0, 0, 0, 0, 0, 0, 1, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
-      [0, 1, 1, 0, 0, 0, 0, 1, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    ]);
-
-    const updateCPUTileValue = (rowIndex, colIndex, newValue) => {
-      const newCPUGameBoard = cpuGameBoard.map((row, rIndex) => {
-        if (rIndex === rowIndex) {
-          return row.map((value, cIndex) => {
-            if (cIndex === colIndex) {
-              return newValue;
-            }
-            return value;
-          });
-        }
-        return row;
-      });
-  
-      setCPUGameBoard(newCPUGameBoard);
-    };
-
-    return (
-      <div className="game-board col-sm-6">
-        {cpuGameBoard.map((row, rowIndex) => (
-          <div key={rowIndex} className="row">
-            {row.map((value, colIndex) => (
-              <CPUTile key={colIndex} value={value} rowIndex={rowIndex} colIndex={colIndex} updateCPUTileValue={updateCPUTileValue} board={gameBoard}/>
-            ))}
-          </div>
-        ))}
-      </div>
-    );
-  };
-
   return (
-    <>
-      <GameBoard />
-      <CPUGameBoard />
-    </>
+    <div className="game-board col-6">
+      {gameBoard.map((row, rowIndex) => (
+        <div key={rowIndex} className="row">
+          {row.map((value, colIndex) => (
+            <Tile key={colIndex} value={value} rowIndex={rowIndex} colIndex={colIndex} updateTileValue={updateTileValue} />
+          ))}
+        </div>
+      ))}
+      <div className="d-flex justify-content-center m-1">
+      </div>
+    </div>
   );
 };
+const toggleTurn = () => {
+  const [turn, setTurn] = useState(true) // true = player's turn, false = cpu's turn, null = null :)
+  const newTurn =(turn === true ? false : true)
+  setTurn(newTurn)
+  console.log(newTurn)
+};
 
-export default GameRules;
+
 
 
 
