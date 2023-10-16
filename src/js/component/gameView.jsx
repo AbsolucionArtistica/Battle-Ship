@@ -14,13 +14,29 @@ export const GameBoard = (board) => {
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [1, 1, 1, 1, 0, 0, 0, 0, 0, 0],
   ]);
+  const [turn, setTurn] = useState(true) // true = player's turn, false = cpu's turn, null = null :)
+
+  const toggleTurn = () => {
+
+    const newTurn = (turn === true ? false : true)
+    setTurn(newTurn)
+    console.log(newTurn)
+
+    if (turn === true) {
+      document.getElementsByClassName("tile").disabled = false;
+    } else {
+      document.getElementsByClassName("tile").disabled = true;
+    }
+  };
 
   const boardBehavior = () => { // aun no esta lista
-    if (board === "player") {
+    if (board === "cpu") {
       const playerGameboard = () => { }
     } else {
       const randomIndex = () => {
         return [Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)];
+
+        toggleTurn
       };
     }
   }
@@ -40,7 +56,7 @@ export const GameBoard = (board) => {
 
     setGameBoard(newGameBoard);
 
-    toggleTurn()
+    toggleTurn
   };
 
   const Tile = ({ value, rowIndex, colIndex, updateTileValue }) => {
@@ -68,7 +84,7 @@ export const GameBoard = (board) => {
     };
 
     return (
-      <button className="tile" style={{ backgroundColor: getTileColor() }} onClick={handleColorChange}></button>
+      <button className="tile" style={{ backgroundColor: getTileColor() }} onClick={handleColorChange} disabled></button>
     );
   };
 
@@ -86,12 +102,7 @@ export const GameBoard = (board) => {
     </div>
   );
 };
-const toggleTurn = () => {
-  const [turn, setTurn] = useState(true) // true = player's turn, false = cpu's turn, null = null :)
-  const newTurn =(turn === true ? false : true)
-  setTurn(newTurn)
-  console.log(newTurn)
-};
+
 
 
 
