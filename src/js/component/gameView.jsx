@@ -23,14 +23,14 @@ export const GameBoard = (board) => {
     console.log(newTurn)
 
     if (turn === true) {
-      document.getElementsByClassName("tile").disabled = false;
+     
     } else {
-      document.getElementsByClassName("tile").disabled = true;
+      
     }
   };
 
   const boardBehavior = () => { // aun no esta lista
-    if (board === "cpu") {
+    if (board === "player") {
       const playerGameboard = () => { }
     } else {
       const randomIndex = () => {
@@ -59,7 +59,7 @@ export const GameBoard = (board) => {
     toggleTurn
   };
 
-  const Tile = ({ value, rowIndex, colIndex, updateTileValue }) => {
+  const Tile = ({ value, rowIndex, colIndex, updateTileValue, turn, board}) => {
     const handleColorChange = () => {
       if (value === 1 || value === 2) {
         updateTileValue(rowIndex, colIndex, 2);
@@ -82,9 +82,8 @@ export const GameBoard = (board) => {
           return "white";
       }
     };
-
     return (
-      <button className="tile" style={{ backgroundColor: getTileColor() }} onClick={handleColorChange} disabled></button>
+      <button className="tile" style={{ backgroundColor: getTileColor() }} onClick={handleColorChange} disabled={!turn} board={board}></button>
     );
   };
 
@@ -93,7 +92,7 @@ export const GameBoard = (board) => {
       {gameBoard.map((row, rowIndex) => (
         <div key={rowIndex} className="row">
           {row.map((value, colIndex) => (
-            <Tile key={colIndex} value={value} rowIndex={rowIndex} colIndex={colIndex} updateTileValue={updateTileValue} />
+            <Tile key={colIndex} value={value} rowIndex={rowIndex} colIndex={colIndex} updateTileValue={updateTileValue} disabled={!turn} board={board}/>
           ))}
         </div>
       ))}
