@@ -1,5 +1,20 @@
 import React, { useEffect, useState } from "react";
 
+const [turn, setTurn] = useState(true) // true = player's turn, false = cpu's turn, null = null :)
+
+const toggleTurn = () => {
+
+  const newTurn = (turn === true ? false : true)
+  setTurn(newTurn)
+  console.log(newTurn)
+
+  if (turn === true) {
+   
+  } else {
+    
+  }
+};
+
 export const GameBoard = (board) => {
 
   const [gameBoard, setGameBoard] = useState([
@@ -14,20 +29,6 @@ export const GameBoard = (board) => {
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [1, 1, 1, 1, 0, 0, 0, 0, 0, 0],
   ]);
-  const [turn, setTurn] = useState(true) // true = player's turn, false = cpu's turn, null = null :)
-
-  const toggleTurn = () => {
-
-    const newTurn = (turn === true ? false : true)
-    setTurn(newTurn)
-    console.log(newTurn)
-
-    if (turn === true) {
-     
-    } else {
-      
-    }
-  };
 
   const boardBehavior = () => { // aun no esta lista
     if (board === "player") {
@@ -36,7 +37,9 @@ export const GameBoard = (board) => {
       const randomIndex = () => {
         return [Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)];
 
-        toggleTurn
+       useEffect(() => {
+
+       },[])
       };
     }
   }
@@ -92,7 +95,7 @@ export const GameBoard = (board) => {
       {gameBoard.map((row, rowIndex) => (
         <div key={rowIndex} className="row">
           {row.map((value, colIndex) => (
-            <Tile key={colIndex} value={value} rowIndex={rowIndex} colIndex={colIndex} updateTileValue={updateTileValue} disabled={!turn} board={board}/>
+            <Tile key={colIndex} value={value} rowIndex={rowIndex} colIndex={colIndex} updateTileValue={updateTileValue} board={board}/>
           ))}
         </div>
       ))}
