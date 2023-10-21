@@ -1,19 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
-const [turn, setTurn] = useState(true) // true = player's turn, false = cpu's turn, null = null :)
-
-const toggleTurn = () => {
-
-  const newTurn = (turn === true ? false : true)
-  setTurn(newTurn)
-  console.log(newTurn)
-
-  if (turn === true) {
-   
-  } else {
-    
-  }
-};
 
 export const GameBoard = (board) => {
 
@@ -37,9 +23,6 @@ export const GameBoard = (board) => {
       const randomIndex = () => {
         return [Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)];
 
-       useEffect(() => {
-
-       },[])
       };
     }
   }
@@ -59,7 +42,7 @@ export const GameBoard = (board) => {
 
     setGameBoard(newGameBoard);
 
-    toggleTurn
+    toggleTurn()
   };
 
   const Tile = ({ value, rowIndex, colIndex, updateTileValue, turn, board}) => {
