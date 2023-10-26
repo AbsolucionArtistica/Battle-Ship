@@ -17,8 +17,8 @@ const Home = () => {
 
   return (
     <>
-      <GameBoard board={"player"} turn={turn} toggleTurn={toggleTurn} />
-      <GameBoard board={"cpu"} turn={turn} toggleTurn={toggleTurn} />
+      <GameBoard board="player" turn={turn} toggleTurn={toggleTurn} />
+      <GameBoard board="cpu" turn={!turn} toggleTurn={toggleTurn} />
     </>
   );
 }
