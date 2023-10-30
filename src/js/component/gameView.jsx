@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from "react";
 
 
-export const GameBoard = (board, turn, toggleTurn) => {
+export const GameBoard = ({ board, turn, toggleTurn }) => {
 
   const [gameBoard, setGameBoard] = useState([
-    [1, 1, 1, 1, 1, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [1, 0, 0, 1, 1, 0, 0, 0, 0, 0],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [1, 1, 1, 1, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   ]);
 
-  const randomShipPlacement = (board) => {
+  const randomShipPlacement = () => {
     const shipSizes = [2, 3, 4, 5]; // Tamaños de los barcos
     const boardSize = 10; // Tamaño del tablero
     const shipBoard = Array.from(Array(boardSize), () => Array(boardSize).fill(0));
@@ -61,7 +61,7 @@ export const GameBoard = (board, turn, toggleTurn) => {
     }
   
     // Actualizar el estado del tablero
-    board(shipBoard);
+    setGameBoard(shipBoard);
   };
   
   useEffect(() => {
@@ -100,15 +100,19 @@ export const GameBoard = (board, turn, toggleTurn) => {
     });
 
     setGameBoard(newGameBoard);
-
-    toggleTurn()
   };
 
   const Tile = ({ value, rowIndex, colIndex, updateTileValue, turn, board}) => { // Componente de la casilla
-    const handleColorChange = () => {
-      if (value === 1 || value === 2) {
+    const handleColorChange = () => { // Filtra si debe cambiar de color y/o turno
+      if (value === 1) {
+        updateTileValue(rowIndex, colIndex, 2); 
+        toggleTurn();
+      } else if (value === 0) {
+        updateTileValue(rowIndex, colIndex, 3);
+        toggleTurn();
+      } else if (value === 2){
         updateTileValue(rowIndex, colIndex, 2);
-      } else {
+      } else{
         updateTileValue(rowIndex, colIndex, 3);
       }
     };
@@ -116,13 +120,13 @@ export const GameBoard = (board, turn, toggleTurn) => {
     const getTileColor = () => { // Color en base al valor
       switch (value) {
         case 0:
-          return "white"; // Empty space
+          return "white"; // Espacio vacio
         case 1:
-          return "white"; // A part of ship
+          return "white"; // Parte de un barco
         case 2:
-          return "red"; // Hit
+          return "red"; // Parte hundida
         case 3:
-          return "gray"; // Missed shot
+          return "gray"; // Disparo fallado
         default:
           return "white";
       }
