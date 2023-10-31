@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 
-
 export const GameBoard = ({ board, turn, toggleTurn }) => {
 
   const [gameBoard, setGameBoard] = useState([
@@ -16,11 +15,13 @@ export const GameBoard = ({ board, turn, toggleTurn }) => {
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   ]);
 
+  const [usedCoordinates, setUsedCoordinates] = useState([]);
+
   const randomShipPlacement = () => {
     const shipSizes = [2, 3, 4, 5]; // Tamaños de los barcos
     const boardSize = 10; // Tamaño del tablero
     const shipBoard = Array.from(Array(boardSize), () => Array(boardSize).fill(0));
-  
+
     // Verifica si una ubicación es válida para un barco
     const isValidLocation = (row, col, size, horizontal) => {
       if (horizontal) {
@@ -38,7 +39,7 @@ export const GameBoard = ({ board, turn, toggleTurn }) => {
       }
       return true;
     };
-  
+
     // Colocar aleatoriamente los barcos en el tablero
     for (const size of shipSizes) {
       let row, col, horizontal;
@@ -47,7 +48,7 @@ export const GameBoard = ({ board, turn, toggleTurn }) => {
         col = Math.floor(Math.random() * boardSize);
         horizontal = Math.random() < 0.5; // true para horizontal, false para vertical
       } while (!isValidLocation(row, col, size, horizontal));
-  
+
       // Marcar las casillas ocupadas por el barco
       if (horizontal) {
         for (let i = 0; i < size; i++) {
@@ -59,11 +60,11 @@ export const GameBoard = ({ board, turn, toggleTurn }) => {
         }
       }
     }
-  
+
     // Actualizar el estado del tablero
     setGameBoard(shipBoard);
   };
-  
+
   useEffect(() => {
     if (board === "player") {
       randomShipPlacement(); // Genera el tablero del jugador
@@ -71,20 +72,32 @@ export const GameBoard = ({ board, turn, toggleTurn }) => {
       randomShipPlacement(); // Genera el tablero de la CPU
     }
   }, []);
-  
+
 
   const randomIndex = () => {
-    if (board === "player" && turn) { // Solo si es el turno del jugador en el tablero "player"
-      const randomRow = Math.floor(Math.random() * 10);
-      const randomCol = Math.floor(Math.random() * 10);
+    if (board === "player" && !turn) {
+      // Generar coordenadas aleatorias y asegurarse de que no se repitan
+      let randomRow, randomCol;
+      do {
+        randomRow = Math.floor(Math.random() * 10);
+        randomCol = Math.floor(Math.random() * 10);
+      } while (usedCoordinates.some(coord => coord[0] === randomRow && coord[1] === randomCol));
 
-      // Actualiza la casilla aleatoria
-      updateTileValue(randomRow, randomCol);
+      // Agregar las coordenadas usadas al registro
+      setUsedCoordinates([...usedCoordinates, [randomRow, randomCol]]);
 
+      updateTileValue(randomRow, randomCol)
       // Alterna el turno
       toggleTurn();
+
     }
   };
+  useEffect(() => {
+    if (!turn && board === "player") {
+      randomIndex();
+    }
+  }, [turn, board]);
+  
 
   const updateTileValue = (rowIndex, colIndex, newValue) => { // Actualiza la casilla dependiendo del valor
     const newGameBoard = gameBoard.map((row, rIndex) => {
@@ -100,23 +113,21 @@ export const GameBoard = ({ board, turn, toggleTurn }) => {
     });
 
     setGameBoard(newGameBoard);
+
+    toggleTurn();
   };
 
-  const Tile = ({ value, rowIndex, colIndex, updateTileValue, turn, board}) => { // Componente de la casilla
+  const Tile = ({ value, rowIndex, colIndex, updateTileValue, turn, board }) => { // Componente de la casilla
     const handleColorChange = () => { // Filtra si debe cambiar de color y/o turno
-      if (value === 1) {
-        updateTileValue(rowIndex, colIndex, 2); // Si es parte de un barco, se covierte en una parte hundida
-        toggleTurn();
-      } else if (value === 0) {
-        updateTileValue(rowIndex, colIndex, 3); // Si es una parte vacia, se convierte en un disparo fallido
-        toggleTurn();
-      } else if (value === 2){
-        updateTileValue(rowIndex, colIndex, 2); // Si es una parte hundida, se mantiene como parte hundida
-      } else if (value === 3){
-        updateTileValue(rowIndex, colIndex, 3); // Si es un disparo fallido, se mantiene como un disparo fallido
-      } else {
-        if (board === "player" && !turn);
-        randomIndex();
+      switch (value) {
+        case 0:
+          return updateTileValue(rowIndex, colIndex, 3); // Si es una parte vacia, se convierte en un disparo fallido
+        case 1:
+          return updateTileValue(rowIndex, colIndex, 2); // Si es parte de un barco, se covierte en una parte hundida
+        case 2:
+          return ; // Si es una parte hundida, se mantiene como parte hundida
+        case 3:
+          return ; // Si es un disparo fallido, se mantiene como un disparo fallido
       }
     };
 
@@ -144,7 +155,7 @@ export const GameBoard = ({ board, turn, toggleTurn }) => {
       {gameBoard.map((row, rowIndex) => (
         <div key={rowIndex} className="row">
           {row.map((value, colIndex) => (
-            <Tile key={colIndex} value={value} rowIndex={rowIndex} colIndex={colIndex} updateTileValue={updateTileValue} board={board} turn={turn}/>
+            <Tile key={colIndex} value={value} rowIndex={rowIndex} colIndex={colIndex} updateTileValue={updateTileValue} board={board} turn={turn} />
           ))}
         </div>
       ))}
@@ -153,6 +164,8 @@ export const GameBoard = ({ board, turn, toggleTurn }) => {
     </div>
   );
 };
+
+
 
 
 
