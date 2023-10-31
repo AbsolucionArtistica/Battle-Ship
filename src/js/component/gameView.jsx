@@ -105,15 +105,18 @@ export const GameBoard = ({ board, turn, toggleTurn }) => {
   const Tile = ({ value, rowIndex, colIndex, updateTileValue, turn, board}) => { // Componente de la casilla
     const handleColorChange = () => { // Filtra si debe cambiar de color y/o turno
       if (value === 1) {
-        updateTileValue(rowIndex, colIndex, 2); 
+        updateTileValue(rowIndex, colIndex, 2); // Si es parte de un barco, se covierte en una parte hundida
         toggleTurn();
       } else if (value === 0) {
-        updateTileValue(rowIndex, colIndex, 3);
+        updateTileValue(rowIndex, colIndex, 3); // Si es una parte vacia, se convierte en un disparo fallido
         toggleTurn();
       } else if (value === 2){
-        updateTileValue(rowIndex, colIndex, 2);
-      } else{
-        updateTileValue(rowIndex, colIndex, 3);
+        updateTileValue(rowIndex, colIndex, 2); // Si es una parte hundida, se mantiene como parte hundida
+      } else if (value === 3){
+        updateTileValue(rowIndex, colIndex, 3); // Si es un disparo fallido, se mantiene como un disparo fallido
+      } else {
+        if (board === "player" && !turn);
+        randomIndex();
       }
     };
 
