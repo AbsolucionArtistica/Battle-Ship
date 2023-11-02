@@ -73,6 +73,12 @@ export const GameBoard = ({ board, turn, toggleTurn }) => {
     }
   }, []);
 
+  useEffect(() => {
+    // Llama a randomIndex
+    if (!turn && board === "player") {
+      randomIndex();
+    }
+  }, [turn]);
 
   const randomIndex = () => {
     if (board === "player" && !turn) {
@@ -89,15 +95,9 @@ export const GameBoard = ({ board, turn, toggleTurn }) => {
       updateTileValue(randomRow, randomCol)
       // Alterna el turno
       toggleTurn();
-
+      console.log("randomIndex ejecutado")
     }
   };
-  useEffect(() => {
-    if (!turn && board === "player") {
-      randomIndex();
-    }
-  }, [turn, board]);
-  
 
   const updateTileValue = (rowIndex, colIndex, newValue) => { // Actualiza la casilla dependiendo del valor
     const newGameBoard = gameBoard.map((row, rIndex) => {
@@ -114,7 +114,7 @@ export const GameBoard = ({ board, turn, toggleTurn }) => {
 
     setGameBoard(newGameBoard);
 
-    toggleTurn();
+    toggleTurn()
   };
 
   const Tile = ({ value, rowIndex, colIndex, updateTileValue, turn, board }) => { // Componente de la casilla
@@ -146,7 +146,7 @@ export const GameBoard = ({ board, turn, toggleTurn }) => {
       }
     };
     return (
-      <button className="tile" style={{ backgroundColor: getTileColor() }} onClick={handleColorChange} disabled={!turn} board={board}></button>
+      <button className="tile" style={{ backgroundColor: getTileColor() }} onClick={handleColorChange} disabled={turn} board={board}></button>
     );
   };
 
